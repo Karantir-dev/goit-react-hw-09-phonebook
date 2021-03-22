@@ -1,0 +1,29 @@
+.list {
+  width: 400px;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0 0 0 20px;
+}
+/* Стили анимаций  */
+
+.enter {
+  transform: translateX(-60%);
+  opacity: 0;
+}
+
+.enterActive {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 250ms linear;
+}
+
+.exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.exitActive {
+  transform: translateX(-60%);
+  opacity: 0;
+  transition: all 250ms linear;
+}

@@ -1,0 +1,33 @@
+.container {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: rgb(255, 134, 54);
+}
+
+/* стили анимаций */
+
+.enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.enterActive {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 250ms linear;
+}
+
+.exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.exitActive {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 250ms linear;
+}

@@ -1,5 +1,6 @@
-import { connect } from 'react-redux';
-import { Component, Suspense, lazy } from 'react';
+import { useDispatch } from 'react-redux';
+import { useEffect, Suspense, lazy } from 'react';
+
 import { Switch, Route } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 
@@ -31,15 +32,16 @@ const ContactsView = lazy(() =>
   ),
 );
 
-class App extends Component {
-  componentDidMount() {
-    this.props.onGetCurrentUser();
-  }
+export default function App() {
+  const dispatch = useDispatch();
 
-  render() {
-    const loader = (
-      <Loader className={s.loader} type="Oval" color="#00BFFF" width={'5vw'} />
-    );
+  useEffect(() => {
+    dispatch(authOperations.getCurrentUser());
+  }, [dispatch]);
+  
+  const loader = (
+    <Loader className={s.loader} type="Oval" color="#00BFFF" width={'5vw'} />
+  );
 
     return (
       <div className={s.container}>
@@ -48,33 +50,24 @@ class App extends Component {
         <Suspense fallback={loader}>
           <Switch>
             <Route exact path="/" component={HomeView} />
-            <PublicRoute
-              restricted
-              path="/register"
-              redirectTo="/"
-              component={RegisterView}
-            />
-            <PublicRoute
-              restricted
-              path="/login"
-              redirectTo="/"
-              component={LoginView}
-            />
-            <PrivateRoute
-              path="/contacts"
-              redirectTo="/login"
-              component={ContactsView}
-            />
+      
+            <PublicRoute restricted path="/register" redirectTo="/">
+              <RegisterView />
+            </PublicRoute>
+      
+          <PublicRoute restricted path="/login" redirectTo="/">
+            <LoginView />
+          </PublicRoute>
+      
+            <PrivateRoute path="/contacts" redirectTo="/login">
+            <ContactsView />
+          </PrivateRoute>
+      
           </Switch>
         </Suspense>
         {createPortal(<Notification />, document.getElementById('portal'))}
       </div>
     );
-  }
 }
 
-const mapDispatchToProps = {
-  onGetCurrentUser: authOperations.getCurrentUser,
-};
 
-export default connect(null, mapDispatchToProps)(App);

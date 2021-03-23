@@ -5,7 +5,7 @@ import authActions from '../auth/auth-actions';
 const allContacts = createReducer([], {
   [contactsActions.fetchContactsSucсess]: (_, { payload }) => payload,
   [contactsActions.addContactSucсess]: (prevState, { payload }) => {
-    return [payload, ...prevState];
+    return [...prevState, payload];
   },
   [contactsActions.deleteContactSucсess]: (prevState, { payload }) => {
     return prevState.filter(({ id }) => {

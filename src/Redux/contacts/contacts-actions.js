@@ -14,7 +14,7 @@ const fetchContactsError = createAction('FETCH_CONTACTS_ERROR');
 
 const changeFilter = createAction('CHANGE_FILTER');
 
-const contactsActions = {
+export default {
   addContactRequest,
   addContactSucсess,
   addContactError,
@@ -26,4 +26,3 @@ const contactsActions = {
   fetchContactsError,
   changeFilter,
 };
-export default contactsActions;

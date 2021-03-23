@@ -1,112 +1,88 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { createPortal } from 'react-dom';
+import { Component } from 'react';
+import { connect } from 'react-redux';
 
-import Loader from 'react-loader-spinner';
-
-import Notification from '../../Components/Notification/Notification';
 import authOperations from '../../Redux/auth/auth-operations';
-import authSelectors from '../../Redux/auth/auth-selectors';
+import authActions from '../../Redux/auth/auth-actions';
 
 import s from './RegisterView.module.css';
 
-export default function RegisterView() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [warningShown, setWarningShown] = useState(false);
+class RegisterView extends Component {
+  state = {
+    name: '',
+    email: '',
+    password: '',
+  };
 
-  const dispatch = useDispatch();
-
-  const isLoading = useSelector(authSelectors.getIsLoadding);
-
-  const onSubmit = e => {
+  onSubmit = e => {
     e.preventDefault();
-    if (password.length < 7) {
-      setWarningShown(true);
-
-      setTimeout(() => {
-        setWarningShown(false);
-      }, 3000);
+    if (this.state.password.length < 7) {
+      this.props.registerError('Password must be at least 7 characters.');
     } else {
-      dispatch(authOperations.register({ name, email, password }));
+      this.props.onRegister(this.state);
 
-      setName('');
-      setEmail('');
-      setPassword('');
+      this.setState({ name: '', email: '', password: '' });
     }
   };
 
-  const onChangeName = e => {
-    setName(e.currentTarget.value);
-  };
-  const onChangeEmail = e => {
-    setEmail(e.currentTarget.value);
-  };
-  const onChangePassword = e => {
-    setPassword(e.currentTarget.value);
+  onChange = e => {
+    this.setState({ [e.currentTarget.name]: e.currentTarget.value });
   };
 
-  const btnActive = Boolean(name && email && password);
+  render() {
+    const { name, email, password } = this.state;
+    const btnActive = Boolean(name && email && password);
 
-  return (
-    <>
-      {isLoading ? (
-        <Loader type="Oval" color="#00BFFF" width={'5vw'} />
-      ) : (
-        <div className={s.container}>
-          <h2>Registration page</h2>
+    return (
+      <div className={s.container}>
+        <h2>Registration page</h2>
 
-          <form onSubmit={onSubmit}>
-            <label className={s.label}>
-              Name
-              <input
-                className={s.input}
-                type="name"
-                name="name"
-                placeholder="Alexander Repeta"
-                value={name}
-                onChange={onChangeName}
-              />
-            </label>
+        <form onSubmit={this.onSubmit}>
+          <label className={s.label}>
+            Name
+            <input
+              className={s.input}
+              type="name"
+              name="name"
+              placeholder="Alexander Repeta"
+              value={name}
+              onChange={this.onChange}
+            />
+          </label>
 
-            <label className={s.label}>
-              Email
-              <input
-                className={s.input}
-                type="email"
-                name="email"
-                placeholder="example@gmail.com"
-                value={email}
-                onChange={onChangeEmail}
-              />
-            </label>
+          <label className={s.label}>
+            Email
+            <input
+              className={s.input}
+              type="email"
+              name="email"
+              placeholder="example@gmail.com"
+              value={email}
+              onChange={this.onChange}
+            />
+          </label>
 
-            <label className={s.label}>
-              Password
-              <input
-                className={s.input}
-                type="password"
-                name="password"
-                value={password}
-                onChange={onChangePassword}
-              />
-            </label>
-
-            <button className={s.btn} disabled={!btnActive} type="submit">
-              Register
-            </button>
-          </form>
-        </div>
-      )}
-
-      {createPortal(
-        <Notification
-          show={warningShown}
-          text={'Password must be at least 7 characters.'}
-        />,
-        document.getElementById('portal'),
-      )}
-    </>
-  );
+          <label className={s.label}>
+            Password
+            <input
+              className={s.input}
+              type="password"
+              name="password"
+              value={password}
+              onChange={this.onChange}
+            />
+          </label>
+          <button className={s.btn} disabled={!btnActive} type="submit">
+            Register
+          </button>
+        </form>
+      </div>
+    );
+  }
 }
+
+const mapDispatchToProps = {
+  onRegister: authOperations.register,
+  registerError: authActions.registerError,
+};
+
+export default connect(null, mapDispatchToProps)(RegisterView);

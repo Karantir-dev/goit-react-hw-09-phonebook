@@ -1,6 +1,5 @@
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import PropTypes from 'prop-types';
 
 import Contact from '../Contact/Contact';
 
@@ -8,7 +7,9 @@ import contactsSelectors from '../../Redux/contacts/contacts-selectors';
 
 import s from './ContactsList.module.css';
 
-function ContactsList({ filteredContacts }) {
+export default function ContactsList() {
+  const filteredContacts = useSelector(contactsSelectors.getFilteredContacts);
+  
   return (
     <TransitionGroup component="ol" className={s.list}>
       {filteredContacts.map(contact => {
@@ -21,13 +22,3 @@ function ContactsList({ filteredContacts }) {
     </TransitionGroup>
   );
 }
-
-ContactsList.propTypes = {
-  filteredContacts: PropTypes.array,
-};
-
-const mapStateToProps = state => ({
-  filteredContacts: contactsSelectors.getFilteredContacts(state),
-});
-
-export default connect(mapStateToProps)(ContactsList);

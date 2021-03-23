@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import AuthNav from '../AuthNav/AuthNav';
@@ -8,7 +8,9 @@ import authSelectors from '../../Redux/auth/auth-selectors';
 
 import s from './AppBar.module.css';
 
-function AppBar({ isAuthenticated }) {
+export default function AppBar() {
+  const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
+  
   return (
     <div className={s.container}>
       <nav className={s.nav}>
@@ -30,9 +32,3 @@ function AppBar({ isAuthenticated }) {
     </div>
   );
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: authSelectors.getIsAuthenticated(state),
-});
-
-export default connect(mapStateToProps)(AppBar);

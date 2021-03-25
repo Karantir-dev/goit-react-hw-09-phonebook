@@ -1,11 +1,14 @@
 import { useDispatch } from 'react-redux';
 import { useEffect, Suspense, lazy } from 'react';
+
 import { Switch, Route } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 
 import AppBar from './Components/AppBar/AppBar';
 import PrivateRoute from './Components/PrivateRoute';
 import PublicRoute from './Components/PublicRoute';
 import Loader from 'react-loader-spinner';
+import Notification from './Components/Notification/Notification';
 
 import authOperations from './Redux/auth/auth-operations';
 
@@ -35,32 +38,36 @@ export default function App() {
   useEffect(() => {
     dispatch(authOperations.getCurrentUser());
   }, [dispatch]);
-
+  
   const loader = (
     <Loader className={s.loader} type="Oval" color="#00BFFF" width={'5vw'} />
   );
 
-  return (
-    <div className={s.container}>
-      <AppBar />
+    return (
+      <div className={s.container}>
+        <AppBar />
 
-      <Suspense fallback={loader}>
-        <Switch>
-          <Route exact path="/" component={HomeView} />
-
-          <PublicRoute restricted path="/register" redirectTo="/">
-            <RegisterView />
-          </PublicRoute>
-
+        <Suspense fallback={loader}>
+          <Switch>
+            <Route exact path="/" component={HomeView} />
+      
+            <PublicRoute restricted path="/register" redirectTo="/">
+              <RegisterView />
+            </PublicRoute>
+      
           <PublicRoute restricted path="/login" redirectTo="/">
             <LoginView />
           </PublicRoute>
-
-          <PrivateRoute path="/contacts" redirectTo="/login">
+      
+            <PrivateRoute path="/contacts" redirectTo="/login">
             <ContactsView />
           </PrivateRoute>
-        </Switch>
-      </Suspense>
-    </div>
-  );
+      
+          </Switch>
+        </Suspense>
+        {createPortal(<Notification />, document.getElementById('portal'))}
+      </div>
+    );
 }
+
+

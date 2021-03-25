@@ -14,5 +14,13 @@
 }
 
 .container {
+  position: relative;
   width: 500px;
+}
+
+.loader {
+  position: absolute;
+  top: 15px;
+  left: 350px;
+  display: inline-block;
 }

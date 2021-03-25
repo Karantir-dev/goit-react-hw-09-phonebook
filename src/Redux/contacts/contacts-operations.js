@@ -30,5 +30,4 @@ const fetchContacts = () => dispatch => {
     .catch(err => dispatch(actions.fetchContactsError(err.message)));
 };
 
-const contactsOperations = { addContact, deleteContact, fetchContacts };
-export default contactsOperations;
+export default { addContact, deleteContact, fetchContacts };

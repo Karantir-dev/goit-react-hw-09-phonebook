@@ -12,7 +12,7 @@ export default function Contact({ contact }) {
   function onDelete() {
     dispatch(contactsOperations.deleteContact(contact.id));
   }
-
+  
   return (
     <li className={s.listItem}>
       <span className={s.span}>{contact.name}</span>

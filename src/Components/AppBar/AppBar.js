@@ -10,14 +10,13 @@ import s from './AppBar.module.css';
 
 export default function AppBar() {
   const isAuthenticated = useSelector(authSelectors.getIsAuthenticated);
-
+  
   return (
     <div className={s.container}>
       <nav className={s.nav}>
         <NavLink exact to="/" className={s.link} activeClassName={s.activeLink}>
           Home
         </NavLink>
-
         {isAuthenticated && (
           <NavLink
             to="/contacts"

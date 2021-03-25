@@ -9,6 +9,7 @@ import s from './ContactsList.module.css';
 
 export default function ContactsList() {
   const filteredContacts = useSelector(contactsSelectors.getFilteredContacts);
+  
   return (
     <TransitionGroup component="ol" className={s.list}>
       {filteredContacts.map(contact => {

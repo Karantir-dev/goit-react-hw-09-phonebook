@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createPortal } from 'react-dom';
 
 import InputMask from 'react-input-mask';
-import Notification from '../Notification/Notification';
 
 import contactsOperations from '../../Redux/contacts/contacts-operations';
 import contactsSelectors from '../../Redux/contacts/contacts-selectors';
+import authActions from '../../Redux/auth/auth-actions';
 
 import s from './AddContactForm.module.css';
 
@@ -17,7 +16,7 @@ export default function AddContactForm() {
   const [textNotification, setTextNotification] = useState('');
 
   const dispatch = useDispatch();
-
+  
   const allContacts = useSelector(contactsSelectors.getAllContacts);
 
   function onChangeName(e) {
@@ -26,15 +25,6 @@ export default function AddContactForm() {
 
   function onChangeNumber(e) {
     setNumber(e.currentTarget.value);
-  }
-
-  function showWarning(text) {
-    setWarningShown(true);
-    setTextNotification(text);
-
-    setTimeout(() => {
-      setWarningShown(false);
-    }, 3000);
   }
 
   function onSubmitForm(e) {
@@ -53,7 +43,7 @@ export default function AddContactForm() {
       setName('');
       setNumber('');
     }
-  }
+  };
 
   return (
     <>
@@ -85,11 +75,6 @@ export default function AddContactForm() {
           Add contact
         </button>
       </form>
-
-      {createPortal(
-        <Notification text={textNotification} show={warningShown} />,
-        document.getElementById('portal'),
-      )}
     </>
   );
 }
